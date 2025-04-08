@@ -6,7 +6,7 @@
 
     public class RetrofitClient {
 
-        private static String BASE_URL="https://www.devmasterteam.com/CursoAndroidAPI";
+        private static String BASE_URL="https://www.devmasterteam.com/CursoAndroidAPI/";
         private static Retrofit retrofit;
 
         private RetrofitClient(){}
