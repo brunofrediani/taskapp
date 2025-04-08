@@ -1,17 +1,22 @@
 package com.bruno.tasks.view;
 
+import static android.app.ProgressDialog.show;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.bruno.tasks.R;
+import com.bruno.tasks.service.listener.Feedback;
 import com.bruno.tasks.viewmodel.LoginViewModel;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -54,7 +59,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             this.mLoginViewModel.login(email, password);
         }
     }
-    private void loadObservers() {}
+    private void loadObservers() {
+        this.mLoginViewModel.login.observe(this, feedback -> {
+            if (feedback.isSuccess()){
+                Toast.makeText(getApplicationContext(),"SUCESSO", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(),feedback.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 
 
