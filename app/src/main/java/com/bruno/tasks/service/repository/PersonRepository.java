@@ -7,6 +7,7 @@ import com.bruno.tasks.R;
 import com.bruno.tasks.service.constants.TaskConstants;
 import com.bruno.tasks.service.listener.APIListener;
 import com.bruno.tasks.service.model.PersonModel;
+import com.bruno.tasks.service.repository.local.SecurityPreferences;
 import com.bruno.tasks.service.repository.remote.PersonService;
 import com.bruno.tasks.service.repository.remote.RetrofitClient;
 import com.google.gson.Gson;
@@ -21,10 +22,12 @@ public class PersonRepository {
 
     private PersonService mPersonService;
     private Context mContext;
+    private SecurityPreferences mSecurityPreferences;
 
     public PersonRepository(Context context){
         this.mPersonService = RetrofitClient.createService(PersonService.class);
         this.mContext = context;
+        this.mSecurityPreferences = new SecurityPreferences(context);
     }
 
     public void create(String name, String email, String password) {
@@ -66,5 +69,10 @@ public class PersonRepository {
                 listener.onFailure(mContext.getString(R.string.ERROR_UNEXPECTED));
             }
         });
+    }
+    public void saveUserData(PersonModel person){
+        this.mSecurityPreferences.store(TaskConstants.SHARED.TOKEN_KEY, person.getToken());
+        this.mSecurityPreferences.store(TaskConstants.SHARED.PERSON_KEY, person.getPersonKey());
+        this.mSecurityPreferences.store(TaskConstants.SHARED.PERSON_NAME, person.getName());
     }
 }
