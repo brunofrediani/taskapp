@@ -9,4 +9,7 @@ public class LoginViewModel extends AndroidViewModel {
     public LoginViewModel(@NonNull Application application) {
         super(application);
     }
+
+    public void login(String email, String password) {
+    }
 }
