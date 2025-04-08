@@ -13,6 +13,18 @@ public class PersonModel {
     @SerializedName("name")
     private String name;
 
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setPersonKey(String personKey) {
+        this.personKey = personKey;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getToken() {
         return token;
     }

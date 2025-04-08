@@ -2,6 +2,7 @@ package com.bruno.tasks.view;
 
 import static android.app.ProgressDialog.show;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +46,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         // Cria observadores
         this.loadObservers();
+
+        this.verifyUserLogged();
     }
     private void setListeners(){
         this.mViewHolder.buttonLogin.setOnClickListener(this);
@@ -59,6 +62,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             this.mLoginViewModel.login(email, password);
         }
     }
+
+    private void verifyUserLogged(){
+        this.mLoginViewModel.verifyUserLogged();
+    }
+
     private void loadObservers() {
         this.mLoginViewModel.login.observe(this, feedback -> {
             if (feedback.isSuccess()){
@@ -67,10 +75,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Toast.makeText(getApplicationContext(),feedback.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+        this.mLoginViewModel.userLogged.observe(this, logged -> {
+            if (logged){
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+            }
+        });
     }
-
-
-
     /**
      * ViewHolder
      */

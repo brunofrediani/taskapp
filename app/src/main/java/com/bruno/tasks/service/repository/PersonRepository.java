@@ -75,4 +75,11 @@ public class PersonRepository {
         this.mSecurityPreferences.store(TaskConstants.SHARED.PERSON_KEY, person.getPersonKey());
         this.mSecurityPreferences.store(TaskConstants.SHARED.PERSON_NAME, person.getName());
     }
+    public PersonModel getUserData(){
+        PersonModel person = new PersonModel();
+        person.setToken(this.mSecurityPreferences.getStore(TaskConstants.SHARED.TOKEN_KEY));
+        person.setPersonKey(this.mSecurityPreferences.getStore(TaskConstants.SHARED.PERSON_KEY));
+        person.setName(this.mSecurityPreferences.getStore(TaskConstants.SHARED.PERSON_NAME));
+        return person;
+    }
 }
