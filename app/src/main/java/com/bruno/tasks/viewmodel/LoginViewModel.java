@@ -10,11 +10,16 @@ import androidx.lifecycle.MutableLiveData;
 import com.bruno.tasks.service.listener.APIListener;
 import com.bruno.tasks.service.listener.Feedback;
 import com.bruno.tasks.service.model.PersonModel;
+import com.bruno.tasks.service.model.PriorityModel;
 import com.bruno.tasks.service.repository.PersonRepository;
+import com.bruno.tasks.service.repository.PriorityRepository;
+
+import java.util.List;
 
 public class LoginViewModel extends AndroidViewModel {
 
     private final PersonRepository mPersonRepository ;
+    private final PriorityRepository mPriorityRepository ;
 
     private MutableLiveData<Feedback> mLogin = new MutableLiveData<>();
     public LiveData<Feedback> login = this.mLogin;
@@ -26,6 +31,7 @@ private MutableLiveData<Boolean> mUserLogged = new MutableLiveData<>();
     public LoginViewModel(@NonNull Application application) {
         super(application);
         this.mPersonRepository = new PersonRepository(application);
+        this.mPriorityRepository = new PriorityRepository();
     }
 
     public void login(String email, String password) {
@@ -44,6 +50,22 @@ private MutableLiveData<Boolean> mUserLogged = new MutableLiveData<>();
     }
     public void verifyUserLogged(){
         PersonModel person = this.mPersonRepository.getUserData();
-        this.mUserLogged.setValue((!"".equals(person.getName())));
+        boolean logged = !"".equals(person.getName());
+
+        if (!logged){
+            this.mPriorityRepository.all(new APIListener<List<PriorityModel>>() {
+                @Override
+                public void onSuccess(List<PriorityModel> result) {
+                    String s="";
+                }
+
+                @Override
+                public void onFailure(String message) {
+
+                }
+            });
+        }
+
+        this.mUserLogged.setValue(logged);
     }
 }
