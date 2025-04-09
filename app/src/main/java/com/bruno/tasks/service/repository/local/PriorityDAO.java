@@ -19,4 +19,7 @@ public interface PriorityDAO {
 
     @Query("SELECT description FROM Priority WHERE id = :id")
     String getDescription(int id);
+
+    @Query("DELETE FROM Priority")
+    void clear();
 }

@@ -71,16 +71,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         this.mLoginViewModel.login.observe(this, feedback -> {
             if (feedback.isSuccess()){
                 Toast.makeText(getApplicationContext(),"SUCESSO", Toast.LENGTH_SHORT).show();
+                startMain();
             } else {
                 Toast.makeText(getApplicationContext(),feedback.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
         this.mLoginViewModel.userLogged.observe(this, logged -> {
             if (logged){
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
+                startMain();
             }
         });
+    }
+
+    private void startMain(){
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        finish();
     }
     /**
      * ViewHolder
