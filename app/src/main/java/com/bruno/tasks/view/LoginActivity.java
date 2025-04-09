@@ -22,7 +22,7 @@ import com.bruno.tasks.viewmodel.LoginViewModel;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ViewHolder mViewHolder = new ViewHolder();
+    private final ViewHolder mViewHolder = new ViewHolder();
     private LoginViewModel mLoginViewModel;
 
     @Override

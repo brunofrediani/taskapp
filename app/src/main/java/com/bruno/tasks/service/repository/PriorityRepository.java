@@ -1,7 +1,11 @@
 package com.bruno.tasks.service.repository;
 
+import android.content.Context;
+
 import com.bruno.tasks.service.listener.APIListener;
 import com.bruno.tasks.service.model.PriorityModel;
+import com.bruno.tasks.service.repository.local.PriorityDAO;
+import com.bruno.tasks.service.repository.local.TaskDatabase;
 import com.bruno.tasks.service.repository.remote.PriorityService;
 import com.bruno.tasks.service.repository.remote.RetrofitClient;
 
@@ -14,9 +18,11 @@ import retrofit2.Response;
 public class PriorityRepository {
 
     private PriorityService mPriorityService;
+    private PriorityDAO mPriorityDAO;
 
-    public PriorityRepository() {
+    public PriorityRepository(Context context) {
         this.mPriorityService = RetrofitClient.createService(PriorityService.class);
+        this.mPriorityDAO = TaskDatabase.getDataBase(context).priorityDAO();
     }
 
     public void all(APIListener<List<PriorityModel>> listener){
@@ -32,5 +38,9 @@ public class PriorityRepository {
                 //TODO
             }
         });
+    }
+
+    public void save(List<PriorityModel> list) {
+        this.mPriorityDAO.save(list);
     }
 }

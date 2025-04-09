@@ -21,17 +21,17 @@ public class LoginViewModel extends AndroidViewModel {
     private final PersonRepository mPersonRepository ;
     private final PriorityRepository mPriorityRepository ;
 
-    private MutableLiveData<Feedback> mLogin = new MutableLiveData<>();
+    private final MutableLiveData<Feedback> mLogin = new MutableLiveData<>();
     public LiveData<Feedback> login = this.mLogin;
 
-private MutableLiveData<Boolean> mUserLogged = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mUserLogged = new MutableLiveData<>();
     public LiveData<Boolean> userLogged = this.mUserLogged;
 
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
         this.mPersonRepository = new PersonRepository(application);
-        this.mPriorityRepository = new PriorityRepository();
+        this.mPriorityRepository = new PriorityRepository(application);
     }
 
     public void login(String email, String password) {
@@ -56,7 +56,7 @@ private MutableLiveData<Boolean> mUserLogged = new MutableLiveData<>();
             this.mPriorityRepository.all(new APIListener<List<PriorityModel>>() {
                 @Override
                 public void onSuccess(List<PriorityModel> result) {
-                    String s="";
+                    mPriorityRepository.save(result);
                 }
 
                 @Override
