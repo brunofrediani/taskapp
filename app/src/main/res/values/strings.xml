@@ -38,5 +38,6 @@
     <string name="entrar">Entrar</string>
     <string name="sair">Sair</string>
     <string name="all_tasks">Tarefas</string>
+    <string name="tarefa">Tarefa</string>
 
 </resources>

@@ -2,8 +2,10 @@ package com.bruno.tasks.view;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -16,13 +18,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bruno.tasks.R;
+import com.bruno.tasks.service.model.PriorityModel;
 import com.bruno.tasks.viewmodel.TaskViewModel;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class TaskActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
@@ -60,7 +66,9 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
 
         // Cria observadores
         this.loadObservers();
-    }
+
+        this.mViewModel.getPriorityList();
+       }
 
     // Botão de voltar nativo
     @Override
@@ -103,6 +111,21 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
      * Observadores
      */
     private void loadObservers() {
+        this.mViewModel.priorityList.observe(this, new Observer<List<PriorityModel>>() {
+            @Override
+            public void onChanged(List<PriorityModel> priorityModels) {
+                loadSpinner(priorityModels);
+            }
+        });
+    }
+    private void loadSpinner(List<PriorityModel> list){
+        List<String> priorityList = new ArrayList<>();
+        for (PriorityModel priority : list){
+            priorityList.add(priority.getDescription());
+        }
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getApplicationContext(),
+                android.R.layout.simple_spinner_dropdown_item,priorityList);
+        mViewHolder.spinnerPriority.setAdapter(spinnerAdapter);
     }
 
     private void createEvents() {
