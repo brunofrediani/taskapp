@@ -1,10 +1,12 @@
 package com.bruno.tasks.view;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -20,9 +22,10 @@ import com.bruno.tasks.R;
 import com.bruno.tasks.viewmodel.TaskViewModel;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
-public class TaskActivity extends AppCompatActivity implements View.OnClickListener {
+public class TaskActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
     private SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private ViewHolder mViewHolder = new ViewHolder();
@@ -59,16 +62,7 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         this.loadObservers();
     }
 
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        if (id == R.id.button_date){
-
-        } else if (id == R.id.button_save){
-
-        }
-    }
-
+    // Botão de voltar nativo
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -76,6 +70,34 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == R.id.button_date){
+            this.showDatePicker();
+        } else if (id == R.id.button_save){
+
+        }
+    }
+
+    private void showDatePicker() {
+        Calendar calendar = Calendar.getInstance();
+        int year= calendar.get(Calendar.YEAR);
+        int month=calendar.get(Calendar.MONTH);
+        int day= calendar.get(Calendar.DAY_OF_MONTH);
+        new DatePickerDialog(this,this,year,month,day).show();
+    }
+
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year,month,dayOfMonth);
+        String date = this.mFormat.format(calendar.getTime());
+        this.mViewHolder.buttonDate.setText(date);
+    }
+
 
     /**
      * Observadores
@@ -87,7 +109,6 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         this.mViewHolder.buttonDate.setOnClickListener(this);
         this.mViewHolder.buttonSave.setOnClickListener(this);
     }
-
 
 
     /**
