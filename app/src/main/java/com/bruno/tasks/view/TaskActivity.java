@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bruno.tasks.R;
 import com.bruno.tasks.service.model.PriorityModel;
+import com.bruno.tasks.service.model.TaskModel;
 import com.bruno.tasks.viewmodel.TaskViewModel;
 
 import java.text.SimpleDateFormat;
@@ -33,9 +34,10 @@ import java.util.Locale;
 
 public class TaskActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
-    private SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-    private ViewHolder mViewHolder = new ViewHolder();
+    private final SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private final ViewHolder mViewHolder = new ViewHolder();
     private TaskViewModel mViewModel;
+    private final List<Integer> mListPriorityId = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,7 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         this.loadObservers();
 
         this.mViewModel.getPriorityList();
-       }
+    }
 
     // Botão de voltar nativo
     @Override
@@ -85,7 +87,7 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         if (id == R.id.button_date){
             this.showDatePicker();
         } else if (id == R.id.button_save){
-
+            this.handleSave();
         }
     }
 
@@ -106,7 +108,13 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         this.mViewHolder.buttonDate.setText(date);
     }
 
-
+    private void handleSave(){
+        TaskModel task = new TaskModel();
+        task.setDescription(this.mViewHolder.editDescription.getText().toString());
+        task.setComplete(this.mViewHolder.checkComplete.isChecked());
+        task.setPriorityId(this.mListPriorityId.get(this.mViewHolder.spinnerPriority.getSelectedItemPosition()));
+        task.setDueDate(this.mViewHolder.buttonDate.getText().toString());
+    }
     /**
      * Observadores
      */
@@ -122,6 +130,7 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         List<String> priorityList = new ArrayList<>();
         for (PriorityModel priority : list){
             priorityList.add(priority.getDescription());
+            this.mListPriorityId.add(priority.getId());
         }
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getApplicationContext(),
                 android.R.layout.simple_spinner_dropdown_item,priorityList);
