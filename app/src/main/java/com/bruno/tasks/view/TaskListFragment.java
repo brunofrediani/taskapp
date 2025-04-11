@@ -3,6 +3,7 @@ package com.bruno.tasks.view;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,9 +14,13 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bruno.tasks.R;
+import com.bruno.tasks.service.listener.Feedback;
 import com.bruno.tasks.service.listener.TaskListener;
+import com.bruno.tasks.service.model.TaskModel;
 import com.bruno.tasks.view.adapter.TaskAdapter;
 import com.bruno.tasks.viewmodel.TaskListViewModel;
+
+import java.util.List;
 
 
 public class TaskListFragment extends Fragment {
@@ -62,9 +67,25 @@ public class TaskListFragment extends Fragment {
         };
         // Cria os observadores
         this.loadObservers();
+        this.mViewModel.list();
         return root;
     }
     private void loadObservers() {
+        this.mViewModel.taskList.observe(getViewLifecycleOwner(), new Observer<List<TaskModel>>() {
+            @Override
+            public void onChanged(List<TaskModel> taskModels) {
+                String s = "";
+            }
+        });
+
+        this.mViewModel.feedback.observe(getViewLifecycleOwner(), new Observer<Feedback>() {
+            @Override
+            public void onChanged(Feedback feedback) {
+                if (!feedback.isSuccess()){
+                    toast(feedback.getMessage());
+                }
+            }
+        });
     }
 
     private void toast(String msg) {

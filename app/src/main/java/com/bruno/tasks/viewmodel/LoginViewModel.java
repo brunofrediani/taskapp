@@ -52,6 +52,10 @@ public class LoginViewModel extends AndroidViewModel {
         PersonModel person = this.mPersonRepository.getUserData();
         boolean logged = !"".equals(person.getName());
 
+        //Adicionar e salvar os headers no caso do usuario ja estar logado, visto que
+        // as variaveis static que guardam as chaves sao resetadas quando o app é finalizado
+        this.mPersonRepository.saveUserData(person);
+
         if (!logged){
             this.mPriorityRepository.all(new APIListener<List<PriorityModel>>() {
                 @Override
