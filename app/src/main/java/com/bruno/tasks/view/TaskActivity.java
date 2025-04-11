@@ -22,6 +22,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bruno.tasks.R;
+import com.bruno.tasks.service.listener.Feedback;
 import com.bruno.tasks.service.model.PriorityModel;
 import com.bruno.tasks.service.model.TaskModel;
 import com.bruno.tasks.viewmodel.TaskViewModel;
@@ -36,7 +37,7 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
 
     private final SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private final ViewHolder mViewHolder = new ViewHolder();
-    private TaskViewModel mViewModel;
+    private TaskViewModel mTaskViewModel;
     private final List<Integer> mListPriorityId = new ArrayList<>();
 
     @Override
@@ -62,14 +63,14 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         this.mViewHolder.buttonSave = findViewById(R.id.button_save);
 
         // ViewModel
-        this.mViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
+        this.mTaskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
 
         this.createEvents();
 
         // Cria observadores
         this.loadObservers();
 
-        this.mViewModel.getPriorityList();
+        this.mTaskViewModel.getPriorityList();
     }
 
     // Botão de voltar nativo
@@ -114,15 +115,23 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         task.setComplete(this.mViewHolder.checkComplete.isChecked());
         task.setPriorityId(this.mListPriorityId.get(this.mViewHolder.spinnerPriority.getSelectedItemPosition()));
         task.setDueDate(this.mViewHolder.buttonDate.getText().toString());
+
+        this.mTaskViewModel.save(task);
     }
     /**
      * Observadores
      */
     private void loadObservers() {
-        this.mViewModel.priorityList.observe(this, new Observer<List<PriorityModel>>() {
+        this.mTaskViewModel.priorityList.observe(this, new Observer<List<PriorityModel>>() {
             @Override
             public void onChanged(List<PriorityModel> priorityModels) {
                 loadSpinner(priorityModels);
+            }
+        });
+        this.mTaskViewModel.taskSave.observe(this, new Observer<Feedback>() {
+            @Override
+            public void onChanged(Feedback feedback) {
+            String s ="";
             }
         });
     }

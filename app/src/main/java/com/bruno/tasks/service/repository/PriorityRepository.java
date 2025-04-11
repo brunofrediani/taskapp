@@ -2,6 +2,8 @@ package com.bruno.tasks.service.repository;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.bruno.tasks.R;
 import com.bruno.tasks.service.constants.TaskConstants;
 import com.bruno.tasks.service.listener.APIListener;
@@ -19,8 +21,8 @@ import retrofit2.Response;
 
 public class PriorityRepository extends BaseRepository{
 
-    private PriorityService mPriorityService;
-    private PriorityDAO mPriorityDAO;
+    private final PriorityService mPriorityService;
+    private final PriorityDAO mPriorityDAO;
 
     public PriorityRepository(Context context) {
         super(context);
@@ -32,7 +34,7 @@ public class PriorityRepository extends BaseRepository{
         Call<List<PriorityModel>> call = this.mPriorityService.all();
         call.enqueue(new Callback<List<PriorityModel>>() {
             @Override
-            public void onResponse(Call<List<PriorityModel>> call, Response<List<PriorityModel>> response) {
+            public void onResponse(@NonNull Call<List<PriorityModel>> call, @NonNull Response<List<PriorityModel>> response) {
                 if (response.code() == TaskConstants.HTTP.SUCCESS){
                     listener.onSuccess(response.body());
                 } else {
@@ -41,7 +43,7 @@ public class PriorityRepository extends BaseRepository{
             }
 
             @Override
-            public void onFailure(Call<List<PriorityModel>> call, Throwable throwable) {
+            public void onFailure(@NonNull Call<List<PriorityModel>> call,@NonNull Throwable throwable) {
                 listener.onFailure(mContext.getString(R.string.ERROR_UNEXPECTED));
             }
         });

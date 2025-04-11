@@ -1,7 +1,8 @@
 package com.bruno.tasks.service.repository;
 
 import android.content.Context;
-import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.bruno.tasks.R;
 import com.bruno.tasks.service.constants.TaskConstants;
@@ -10,9 +11,7 @@ import com.bruno.tasks.service.model.PersonModel;
 import com.bruno.tasks.service.repository.local.SecurityPreferences;
 import com.bruno.tasks.service.repository.remote.PersonService;
 import com.bruno.tasks.service.repository.remote.RetrofitClient;
-import com.google.gson.Gson;
 
-import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,8 +19,8 @@ import retrofit2.Response;
 
 public class PersonRepository extends BaseRepository{
 
-    private PersonService mPersonService;
-    private SecurityPreferences mSecurityPreferences;
+    private final PersonService mPersonService;
+    private final SecurityPreferences mSecurityPreferences;
 
     public PersonRepository(Context context){
         super(context);
@@ -34,7 +33,7 @@ public class PersonRepository extends BaseRepository{
         Call<PersonModel> call = this.mPersonService.create(name,email,password,true);
         call.enqueue(new Callback<PersonModel>() {
             @Override
-            public void onResponse(Call<PersonModel> call, Response<PersonModel> response) {
+            public void onResponse(@NonNull Call<PersonModel> call, @NonNull Response<PersonModel> response) {
                 if (response.code() == TaskConstants.HTTP.SUCCESS) {
                     listener.onSuccess(response.body());
 
@@ -45,7 +44,7 @@ public class PersonRepository extends BaseRepository{
             }
 
             @Override
-            public void onFailure(Call<PersonModel> call, Throwable throwable) {
+            public void onFailure(@NonNull Call<PersonModel> call,@NonNull Throwable throwable) {
                 listener.onFailure(mContext.getString(R.string.ERROR_UNEXPECTED));
 
             }
@@ -55,7 +54,7 @@ public class PersonRepository extends BaseRepository{
         Call<PersonModel> call = this.mPersonService.login(email, password);
         call.enqueue(new Callback<PersonModel>() {
             @Override
-            public void onResponse(Call<PersonModel> call, Response<PersonModel> response) {
+            public void onResponse(@NonNull Call<PersonModel> call,@NonNull Response<PersonModel> response) {
                 if (response.code() == TaskConstants.HTTP.SUCCESS){
                     listener.onSuccess(response.body());
                 } else {
@@ -64,7 +63,7 @@ public class PersonRepository extends BaseRepository{
             }
 
             @Override
-            public void onFailure(Call<PersonModel> call, Throwable throwable) {
+            public void onFailure(@NonNull Call<PersonModel> call,@NonNull Throwable throwable) {
                 listener.onFailure(mContext.getString(R.string.ERROR_UNEXPECTED));
             }
         });
@@ -73,6 +72,8 @@ public class PersonRepository extends BaseRepository{
         this.mSecurityPreferences.store(TaskConstants.SHARED.TOKEN_KEY, person.getToken());
         this.mSecurityPreferences.store(TaskConstants.SHARED.PERSON_KEY, person.getPersonKey());
         this.mSecurityPreferences.store(TaskConstants.SHARED.PERSON_NAME, person.getName());
+
+        RetrofitClient.saveHeaders(person.getToken(), person.getPersonKey());
     }
     public PersonModel getUserData(){
         PersonModel person = new PersonModel();
