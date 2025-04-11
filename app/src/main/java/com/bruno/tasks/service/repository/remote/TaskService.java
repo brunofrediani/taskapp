@@ -17,13 +17,13 @@ import retrofit2.http.Path;
 public interface TaskService {
 
     @GET("Task")
-    Call<List<TaskModel>> all();
+    Call<List<TaskModel>> getAllTasks();
 
     @GET("Task/Next7Days")
-    Call<List<TaskModel>> nextWeek();
+    Call<List<TaskModel>> getNextWeekTasks();
 
     @GET("Task/Overdue")
-    Call<List<TaskModel>> overdue();
+    Call<List<TaskModel>> getOverdueTasks();
 
     @GET("Task/{id}")
     Call<TaskModel> load(@Path(value = "id", encoded = true) int id);
