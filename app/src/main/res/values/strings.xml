@@ -39,5 +39,7 @@
     <string name="sair">Sair</string>
     <string name="all_tasks">Tarefas</string>
     <string name="tarefa">Tarefa</string>
+    <string name="task_status_icon">task status icon</string>
+    <string name="descri_o">Descrição</string>
 
 </resources>
