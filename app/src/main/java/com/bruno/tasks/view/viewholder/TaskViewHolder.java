@@ -1,5 +1,7 @@
 package com.bruno.tasks.view.viewholder;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -64,18 +66,22 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
                 mListener.onListClick(task.getId());
             }
         });
-        /*
-        new AlertDialog.Builder(itemView.getContext())
-                .setTitle(R.string.remocao_de_tarefa)
-                .setMessage(R.string.remover_tarefa)
-                .setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // mListener.onDeleteClick(task.id);
-                    }
-                })
-                .setNeutralButton(R.string.cancelar, null).show();*/
 
-
-    }
+        this.mTextDescription.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                new AlertDialog.Builder(itemView.getContext())
+                        .setTitle(R.string.remocao_de_tarefa)
+                        .setMessage(R.string.remover_tarefa)
+                        .setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mListener.onDeleteClick(task.getId());
+                            }
+                        })
+                        .setNeutralButton(R.string.cancelar, null).show();
+                return false;
+            }
+        });
+        }
 }

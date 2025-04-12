@@ -1,7 +1,5 @@
 package com.bruno.tasks.view;
 
-import static android.app.ProgressDialog.show;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,10 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.bruno.tasks.R;
-import com.bruno.tasks.service.listener.Feedback;
 import com.bruno.tasks.viewmodel.LoginViewModel;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {

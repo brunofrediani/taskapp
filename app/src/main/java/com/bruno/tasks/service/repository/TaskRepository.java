@@ -66,6 +66,23 @@ public class TaskRepository extends BaseRepository {
         save(call, listener);
     }
 
+    public void delete(int id, APIListener<Boolean> listener) {
+        Call<Boolean> call = this.mTaskService.delete(id);
+        call.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(@NonNull Call<Boolean> call, @NonNull Response<Boolean> response) {
+                if (response.code() == TaskConstants.HTTP.SUCCESS) {
+                    listener.onSuccess(response.body());
+                } else {
+                    listener.onFailure(handleFailure(response.errorBody()));
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<Boolean> call, @NonNull Throwable throwable) {
+                listener.onFailure(mContext.getString(R.string.ERROR_UNEXPECTED));
+            }
+        });
+    }
 
     public void list(Call<List<TaskModel>> call, APIListener<List<TaskModel>> listener) {
         call.enqueue(new Callback<List<TaskModel>>() {

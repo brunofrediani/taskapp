@@ -53,4 +53,19 @@ public class TaskListViewModel extends AndroidViewModel {
         }
     }
 
+    public void delete(int id) {
+        mTaskRepository.delete(id, new APIListener<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                if (result){
+                    mFeedback.setValue(new Feedback());
+                }
+            }
+
+            @Override
+            public void onFailure(String message) {
+                mFeedback.setValue(new Feedback(message));
+            }
+        });
+    }
 }
