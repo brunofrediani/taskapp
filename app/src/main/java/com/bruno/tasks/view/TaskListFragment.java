@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bruno.tasks.R;
+import com.bruno.tasks.service.constants.TaskConstants;
 import com.bruno.tasks.service.listener.Feedback;
 import com.bruno.tasks.service.listener.TaskListener;
 import com.bruno.tasks.service.model.TaskModel;
@@ -25,9 +26,10 @@ import java.util.List;
 
 public class TaskListFragment extends Fragment {
 
-    private TaskAdapter mAdapter = new TaskAdapter();
+    private final TaskAdapter mAdapter = new TaskAdapter();
     private TaskListViewModel mViewModel;
     private TaskListener mListener;
+    private int mTaskFilter = 0;
 
 
     @Override
@@ -67,13 +69,20 @@ public class TaskListFragment extends Fragment {
         };
         // Cria os observadores
         this.loadObservers();
+
+        //pegar o valor de argument que está definido no mobile navigation xml
+        Bundle bundle = getArguments();
+        if (bundle != null){
+           this.mTaskFilter = bundle.getInt(TaskConstants.TASKFILTER.KEY);
+        }
+
         return root;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        this.mViewModel.list();
+        this.mViewModel.list(this.mTaskFilter);
     }
 
     private void loadObservers() {

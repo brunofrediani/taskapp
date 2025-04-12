@@ -19,14 +19,14 @@ import java.util.Locale;
 
 public class TaskViewHolder extends RecyclerView.ViewHolder {
 
-    private PriorityRepository mPriorityRepository;
-    private SimpleDateFormat mDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-    private TaskListener mListener;
+    private final PriorityRepository mPriorityRepository;
+    private final SimpleDateFormat mDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private final TaskListener mListener;
 
-    private ImageView mImageComplete  = itemView.findViewById(R.id.image_complete);
-    private TextView mTextDescription = itemView.findViewById(R.id.text_description);
-    private TextView mTextPriority = itemView.findViewById(R.id.text_priority);
-    private TextView mTextDueDate = itemView.findViewById(R.id.text_duedate);
+    private final ImageView mImageComplete  = itemView.findViewById(R.id.image_complete);
+    private final TextView mTextDescription = itemView.findViewById(R.id.text_description);
+    private final TextView mTextPriority = itemView.findViewById(R.id.text_priority);
+    private final TextView mTextDueDate = itemView.findViewById(R.id.text_duedate);
 
     public TaskViewHolder(@NonNull View itemView, TaskListener listener) {
         super(itemView);
