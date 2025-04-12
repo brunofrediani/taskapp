@@ -57,6 +57,13 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         } else {
             this.mImageComplete.setImageResource(R.drawable.ic_todo);
         }
+
+        this.mTextDescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onListClick(task.getId());
+            }
+        });
         /*
         new AlertDialog.Builder(itemView.getContext())
                 .setTitle(R.string.remocao_de_tarefa)

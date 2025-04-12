@@ -82,4 +82,25 @@ public class TaskRepository extends BaseRepository{
         Call<List<TaskModel>> call = this.mTaskService.getOverdueTasks();
         list(call,listener);
     }
+
+    public void load(int id, APIListener<TaskModel> listener){
+        Call<TaskModel> call = this.mTaskService.load(id);
+        call.enqueue(new Callback<TaskModel>() {
+            @Override
+            public void onResponse(@NonNull Call<TaskModel> call, @NonNull Response<TaskModel> response) {
+                if (response.code() == TaskConstants.HTTP.SUCCESS) {
+                    listener.onSuccess(response.body());
+                } else {
+                    listener.onFailure(handleFailure(response.errorBody()));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<TaskModel> call, @NonNull Throwable throwable) {
+                listener.onFailure(mContext.getString(R.string.ERROR_UNEXPECTED));
+
+            }
+        });
+
+    }
 }

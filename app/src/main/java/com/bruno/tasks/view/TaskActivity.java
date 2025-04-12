@@ -22,6 +22,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bruno.tasks.R;
+import com.bruno.tasks.service.constants.TaskConstants;
 import com.bruno.tasks.service.listener.Feedback;
 import com.bruno.tasks.service.model.PriorityModel;
 import com.bruno.tasks.service.model.TaskModel;
@@ -39,6 +40,7 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
     private final ViewHolder mViewHolder = new ViewHolder();
     private TaskViewModel mTaskViewModel;
     private final List<Integer> mListPriorityId = new ArrayList<>();
+    private int mTaskId=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +71,10 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
 
         // Cria observadores
         this.loadObservers();
-
         this.mTaskViewModel.getPriorityList();
+
+
+        this.loadDataFromActivity();
     }
 
     // Botão de voltar nativo
@@ -80,6 +84,14 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
             getOnBackPressedDispatcher().onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void loadDataFromActivity(){
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            this.mTaskId = bundle.getInt(TaskConstants.BUNDLE.TASKID);
+            this.mTaskViewModel.load(this.mTaskId);
+        }
     }
 
     @Override
@@ -128,7 +140,15 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
                 loadSpinner(priorityModels);
             }
         });
-        this.mTaskViewModel.taskSave.observe(this, new Observer<Feedback>() {
+
+        this.mTaskViewModel.taskLoad.observe(this, new Observer<TaskModel>() {
+            @Override
+            public void onChanged(TaskModel taskModel) {
+                String s ="";
+            }
+        });
+
+        this.mTaskViewModel.feedback.observe(this, new Observer<Feedback>() {
             @Override
             public void onChanged(Feedback feedback) {
             String s ="";

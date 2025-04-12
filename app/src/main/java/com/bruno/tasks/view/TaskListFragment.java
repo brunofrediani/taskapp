@@ -1,5 +1,6 @@
 package com.bruno.tasks.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -49,7 +50,11 @@ public class TaskListFragment extends Fragment {
 
             @Override
             public void onListClick(int id) {
-
+                Intent intent = new Intent(getContext(),TaskActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(TaskConstants.BUNDLE.TASKID,id);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
 
             @Override
@@ -67,6 +72,8 @@ public class TaskListFragment extends Fragment {
 
             }
         };
+        this.mAdapter.attachListener(this.mListener);
+
         // Cria os observadores
         this.loadObservers();
 
