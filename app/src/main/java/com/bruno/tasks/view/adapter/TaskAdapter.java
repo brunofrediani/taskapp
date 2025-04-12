@@ -9,10 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bruno.tasks.R;
 import com.bruno.tasks.service.listener.TaskListener;
+import com.bruno.tasks.service.model.TaskModel;
 import com.bruno.tasks.view.viewholder.TaskViewHolder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
-    // private List<TaskModel> mList = new ArrayList<>();
+    private List<TaskModel> mList = new ArrayList<>();
     private TaskListener mListener;
 
     @NonNull
@@ -24,13 +28,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-        // TaskModel taskModel = this.mList.get(position);
-        // holder.bindData(taskModel);
+         TaskModel taskModel = this.mList.get(position);
+         holder.bindData(taskModel);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return this.mList.size();
     }
 
     /**
@@ -43,8 +47,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     /**
      * Atualiza listagem
      */
-    /*public void updateList(List<TaskModel> list) {
+    public void updateList(List<TaskModel> list) {
         this.mList = list;
         notifyDataSetChanged();
-    } */
+    }
 }

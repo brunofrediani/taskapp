@@ -14,12 +14,12 @@ public interface PriorityDAO {
     @Insert
     void save(List<PriorityModel> list);
 
-    @Query("SELECT * FROM Priority")
+    @Query("SELECT * FROM priority")
     List<PriorityModel> list();
 
-    @Query("SELECT description FROM Priority WHERE id = :id")
+    @Query("SELECT description FROM priority WHERE id = :id")
     String getDescription(int id);
 
-    @Query("DELETE FROM Priority")
+    @Query("DELETE FROM priority")
     void clear();
 }

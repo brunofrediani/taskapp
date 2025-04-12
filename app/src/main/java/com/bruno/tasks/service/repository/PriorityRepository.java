@@ -26,6 +26,7 @@ public class PriorityRepository extends BaseRepository{
 
     public PriorityRepository(Context context) {
         super(context);
+        this.mContext = context;
         this.mPriorityService = RetrofitClient.createService(PriorityService.class);
         this.mPriorityDAO = TaskDatabase.getDataBase(context).priorityDAO();
     }
@@ -50,6 +51,10 @@ public class PriorityRepository extends BaseRepository{
     }
     public List<PriorityModel> getPriorityList(){
         return this.mPriorityDAO.list();
+    }
+
+    public String getDescription(int id){
+        return this.mPriorityDAO.getDescription(id);
     }
 
     public void save(List<PriorityModel> list) {

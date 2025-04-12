@@ -67,14 +67,20 @@ public class TaskListFragment extends Fragment {
         };
         // Cria os observadores
         this.loadObservers();
-        this.mViewModel.list();
         return root;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.mViewModel.list();
+    }
+
     private void loadObservers() {
         this.mViewModel.taskList.observe(getViewLifecycleOwner(), new Observer<List<TaskModel>>() {
             @Override
             public void onChanged(List<TaskModel> taskModels) {
-                String s = "";
+            mAdapter.updateList(taskModels);
             }
         });
 
