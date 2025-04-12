@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -28,9 +29,11 @@ import com.bruno.tasks.service.model.PriorityModel;
 import com.bruno.tasks.service.model.TaskModel;
 import com.bruno.tasks.viewmodel.TaskViewModel;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -90,6 +93,7 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             this.mTaskId = bundle.getInt(TaskConstants.BUNDLE.TASKID);
+            mViewHolder.buttonSave.setText(this.getString(R.string.update_task));
             this.mTaskViewModel.load(this.mTaskId);
         }
     }
@@ -123,6 +127,7 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
 
     private void handleSave(){
         TaskModel task = new TaskModel();
+        task.setId(this.mTaskId);
         task.setDescription(this.mViewHolder.editDescription.getText().toString());
         task.setComplete(this.mViewHolder.checkComplete.isChecked());
         task.setPriorityId(this.mListPriorityId.get(this.mViewHolder.spinnerPriority.getSelectedItemPosition()));
@@ -144,17 +149,50 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         this.mTaskViewModel.taskLoad.observe(this, new Observer<TaskModel>() {
             @Override
             public void onChanged(TaskModel taskModel) {
-                String s ="";
+                mViewHolder.editDescription.setText(taskModel.getDescription());
+                mViewHolder.checkComplete.setChecked(taskModel.isComplete());
+                mViewHolder.spinnerPriority.setSelection(getIndex(taskModel.getPriorityId()));
+
+
+                //carregar a data
+                try {
+                    Date date = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault()).parse(taskModel.getDueDate());
+                    assert date != null;
+                    mViewHolder.buttonDate.setText(mFormat.format(date));
+                } catch (ParseException e) {
+                    mViewHolder.buttonDate.setText("--");
+                }
             }
         });
 
         this.mTaskViewModel.feedback.observe(this, new Observer<Feedback>() {
             @Override
             public void onChanged(Feedback feedback) {
-            String s ="";
+                if (feedback.isSuccess()){
+                    if (mTaskId == 0){
+                        toast(getApplicationContext().getString(R.string.task_created));
+                    } else {
+                        toast(getApplicationContext().getString(R.string.task_updated));
+
+                    }
+                    finish();
+                } else {
+                    toast(feedback.getMessage());
+                }
             }
         });
     }
+    private int getIndex(int priorityId) {
+        int index = 0;
+        for (int i = 0; i < mListPriorityId.size(); i++) {
+            if (mListPriorityId.get(i) == priorityId){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
     private void loadSpinner(List<PriorityModel> list){
         List<String> priorityList = new ArrayList<>();
         for (PriorityModel priority : list){
@@ -182,4 +220,9 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         Button buttonDate;
         Button buttonSave;
     }
+
+    private void toast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
 }

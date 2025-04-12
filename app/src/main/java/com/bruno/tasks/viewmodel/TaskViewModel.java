@@ -35,16 +35,18 @@ public class TaskViewModel extends AndroidViewModel {
         this.mPriorityRepository = new PriorityRepository(application);
         this.mTaskRepository = new TaskRepository(application);
     }
-    public void getPriorityList(){
+
+    public void getPriorityList() {
         List<PriorityModel> list = this.mPriorityRepository.getPriorityList();
         this.mPriorityList.setValue(list);
 
     }
-    public void load(int id){
+
+    public void load(int id) {
         this.mTaskRepository.load(id, new APIListener<TaskModel>() {
             @Override
             public void onSuccess(TaskModel result) {
-            mTaskLoad.setValue(result);
+                mTaskLoad.setValue(result);
             }
 
             @Override
@@ -53,19 +55,23 @@ public class TaskViewModel extends AndroidViewModel {
             }
         });
     }
-    public void save(TaskModel task){
-        this.mTaskRepository.save(task, new APIListener<Boolean>() {
 
+    public void save(TaskModel task) {
+        APIListener<Boolean> listener = new APIListener<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
                 mFeedback.setValue(new Feedback());
             }
-
             @Override
             public void onFailure(String message) {
                 mFeedback.setValue(new Feedback(message));
-
             }
-        });
+        };
+
+        if (task.getId() == 0) {
+            this.mTaskRepository.create(task, listener);
+        } else {
+            this.mTaskRepository.update(task, listener);
+        }
     }
 }
