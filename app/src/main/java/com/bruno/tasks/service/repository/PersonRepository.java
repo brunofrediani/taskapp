@@ -30,6 +30,10 @@ public class PersonRepository extends BaseRepository{
     }
 
     public void create(String name, String email, String password,APIListener<PersonModel> listener) {
+        if (!super.isConnectionAvailable()){
+            listener.onFailure(mContext.getString(R.string.ERROR_INTERNET_CONNECTION));
+            return;
+        }
         Call<PersonModel> call = this.mPersonService.create(name,email,password,true);
         call.enqueue(new Callback<PersonModel>() {
             @Override
@@ -51,6 +55,10 @@ public class PersonRepository extends BaseRepository{
         });
     }
     public void login(String email, String password, APIListener<PersonModel> listener){
+        if (!super.isConnectionAvailable()){
+            listener.onFailure(mContext.getString(R.string.ERROR_INTERNET_CONNECTION));
+            return;
+        }
         Call<PersonModel> call = this.mPersonService.login(email, password);
         call.enqueue(new Callback<PersonModel>() {
             @Override

@@ -27,6 +27,10 @@ public class TaskRepository extends BaseRepository {
     }
 
     private void persist(Call<Boolean> call, APIListener<Boolean> listener) {
+        if (!super.isConnectionAvailable()){
+            listener.onFailure(mContext.getString(R.string.ERROR_INTERNET_CONNECTION));
+            return;
+        }
         call.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(@NonNull Call<Boolean> call, @NonNull Response<Boolean> response) {
@@ -82,6 +86,10 @@ public class TaskRepository extends BaseRepository {
     }
 
     public void list(Call<List<TaskModel>> call, APIListener<List<TaskModel>> listener) {
+        if (!super.isConnectionAvailable()){
+            listener.onFailure(mContext.getString(R.string.ERROR_INTERNET_CONNECTION));
+            return;
+        }
         call.enqueue(new Callback<List<TaskModel>>() {
             @Override
             public void onResponse(@NonNull Call<List<TaskModel>> call, @NonNull Response<List<TaskModel>> response) {
