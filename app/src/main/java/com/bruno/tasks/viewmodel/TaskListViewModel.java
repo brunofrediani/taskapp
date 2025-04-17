@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskListViewModel extends AndroidViewModel {
+
+    private int mFilter =0;
     private final TaskRepository mTaskRepository;
 
     private final MutableLiveData<List<TaskModel>> mTaskList = new MutableLiveData<>();
@@ -31,6 +33,7 @@ public class TaskListViewModel extends AndroidViewModel {
     }
 
     public void list(int filter){
+        this.mFilter = filter;
         APIListener<List<TaskModel>> listener = new APIListener<List<TaskModel>>() {
             @Override
             public void onSuccess(List<TaskModel> result) {
@@ -52,14 +55,30 @@ public class TaskListViewModel extends AndroidViewModel {
             this.mTaskRepository.overdueTasks(listener);
         }
     }
+    public void updateStatus(int id, boolean complete) {
+        APIListener<Boolean> listener = new APIListener<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                list(mFilter);            }
 
+            @Override
+            public void onFailure(String message) {
+                mFeedback.setValue(new Feedback(message));
+            }
+        };
+        if (complete){
+            mTaskRepository.complete(id, listener);
+        } else {
+            mTaskRepository.undo(id, listener);
+        }
+    }
     public void delete(int id) {
         mTaskRepository.delete(id, new APIListener<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-                if (result){
-                    mFeedback.setValue(new Feedback());
-                }
+                list(mFilter);
+                mFeedback.setValue(new Feedback());
+
             }
 
             @Override
@@ -68,4 +87,6 @@ public class TaskListViewModel extends AndroidViewModel {
             }
         });
     }
+
+
 }

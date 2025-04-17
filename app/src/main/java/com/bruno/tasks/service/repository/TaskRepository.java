@@ -26,7 +26,7 @@ public class TaskRepository extends BaseRepository {
         this.mTaskService = RetrofitClient.createService(TaskService.class);
     }
 
-    private void save(Call<Boolean> call, APIListener<Boolean> listener) {
+    private void persist(Call<Boolean> call, APIListener<Boolean> listener) {
         call.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(@NonNull Call<Boolean> call, @NonNull Response<Boolean> response) {
@@ -52,7 +52,7 @@ public class TaskRepository extends BaseRepository {
                 task.getDueDate(),
                 task.isComplete()
         );
-        save(call, listener);
+        this.persist(call, listener);
     }
 
     public void update(TaskModel task, APIListener<Boolean> listener) {
@@ -63,25 +63,22 @@ public class TaskRepository extends BaseRepository {
                 task.getDueDate(),
                 task.isComplete()
         );
-        save(call, listener);
+        this.persist(call, listener);
     }
 
     public void delete(int id, APIListener<Boolean> listener) {
         Call<Boolean> call = this.mTaskService.delete(id);
-        call.enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(@NonNull Call<Boolean> call, @NonNull Response<Boolean> response) {
-                if (response.code() == TaskConstants.HTTP.SUCCESS) {
-                    listener.onSuccess(response.body());
-                } else {
-                    listener.onFailure(handleFailure(response.errorBody()));
-                }
-            }
-            @Override
-            public void onFailure(@NonNull Call<Boolean> call, @NonNull Throwable throwable) {
-                listener.onFailure(mContext.getString(R.string.ERROR_UNEXPECTED));
-            }
-        });
+        this.persist(call,listener);
+
+    }
+
+    public void complete(int id, APIListener<Boolean> listener){
+        Call<Boolean> call = this.mTaskService.complete(id);
+        this.persist(call,listener);
+    }
+    public void undo(int id, APIListener<Boolean> listener){
+        Call<Boolean> call = this.mTaskService.undo(id);
+        this.persist(call,listener);
     }
 
     public void list(Call<List<TaskModel>> call, APIListener<List<TaskModel>> listener) {
