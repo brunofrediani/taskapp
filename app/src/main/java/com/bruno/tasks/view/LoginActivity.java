@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -34,6 +35,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         this.mViewHolder.editEmail = findViewById(R.id.edit_email);
         this.mViewHolder.editPassword = findViewById(R.id.edit_password);
         this.mViewHolder.buttonLogin = findViewById(R.id.button_login);
+        this.mViewHolder.txtRegister = findViewById(R.id.txt_register);
+
+
 
         // Incializa as variáveis
         this.mLoginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
@@ -47,6 +51,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
     private void setListeners(){
         this.mViewHolder.buttonLogin.setOnClickListener(this);
+        this.mViewHolder.txtRegister.setOnClickListener(this);
     }
     @Override
     public void onClick(View view) {
@@ -56,6 +61,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String password = this.mViewHolder.editPassword.getText().toString();
 
             this.mLoginViewModel.login(email, password);
+        } else if (id == R.id.txt_register) {
+            startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
         }
     }
 
@@ -90,5 +97,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         EditText editEmail;
         EditText editPassword;
         Button buttonLogin;
+        TextView txtRegister;
     }
 }

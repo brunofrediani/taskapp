@@ -5,26 +5,44 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/shape_login_background"
     android:padding="16dp"
     tools:context=".view.LoginActivity">
+
+    <ImageView
+        android:id="@+id/image_logotipo"
+        android:layout_marginTop="64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:contentDescription="@string/login_logotipo"
+        android:src="@drawable/ic_logotipo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <EditText
         android:id="@+id/edit_email"
         android:autofillHints="emailAddress"
         android:inputType="textEmailAddress"
+        android:layout_marginTop="128dp"
         android:hint="@string/email"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/WhiteEditText"
+        android:drawableStart="@drawable/ic_mail"
+        android:layout_height="50dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/image_logotipo"/>
+
     <EditText
         android:id="@+id/edit_password"
         android:autofillHints="password"
         android:hint="@string/senha"
         android:inputType="textPassword"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/WhiteEditText"
+        android:drawableStart="@drawable/ic_lock"
+        android:layout_height="50dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_email"/>
@@ -37,4 +55,30 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_password"/>
+    <TextView
+        android:id="@+id/txt_no_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nao_tem_uma_conta"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/txt_register"/>
+    <TextView
+        android:id="@+id/txt_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cadastre_se"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintLeft_toRightOf="@id/txt_no_account"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
