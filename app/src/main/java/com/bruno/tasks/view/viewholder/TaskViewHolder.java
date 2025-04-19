@@ -2,6 +2,7 @@ package com.bruno.tasks.view.viewholder;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,8 +57,10 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
 
         if (task.isComplete()){
             this.mImageComplete.setImageResource(R.drawable.ic_done);
+            this.mTextDescription.setTextColor(Color.GRAY);
         } else {
             this.mImageComplete.setImageResource(R.drawable.ic_todo);
+            this.mTextDescription.setTextColor(Color.BLACK);
         }
 
         this.mTextDescription.setOnClickListener(new View.OnClickListener() {
