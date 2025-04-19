@@ -90,4 +90,10 @@ public class PersonRepository extends BaseRepository{
         person.setName(this.mSecurityPreferences.getStore(TaskConstants.SHARED.PERSON_NAME));
         return person;
     }
+
+    public void clearUserData(){
+        this.mSecurityPreferences.remove(TaskConstants.SHARED.TOKEN_KEY);
+        this.mSecurityPreferences.remove(TaskConstants.SHARED.PERSON_KEY);
+        this.mSecurityPreferences.remove(TaskConstants.SHARED.PERSON_NAME);
+    }
 }
