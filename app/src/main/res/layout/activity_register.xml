@@ -15,6 +15,8 @@
         android:hint="@string/nome"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
+        android:drawableStart="@drawable/ic_name"
+        android:drawablePadding="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -25,6 +27,9 @@
         android:hint="@string/email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawableStart="@drawable/ic_mail"
+        android:drawablePadding="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_name"/>
@@ -35,6 +40,9 @@
         android:inputType="textPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawableStart="@drawable/ic_lock"
+        android:drawablePadding="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_email"/>
@@ -43,6 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:text="@string/cadastrar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

@@ -2,12 +2,14 @@ package com.bruno.tasks.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -19,7 +21,7 @@ import com.bruno.tasks.viewmodel.RegisterViewModel;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ViewHolder mViewHolder = new ViewHolder();
+    private final ViewHolder mViewHolder = new ViewHolder();
     private RegisterViewModel mRegisterViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             this.mRegisterViewModel.create(name, email, password);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            getOnBackPressedDispatcher().onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadObservers() {

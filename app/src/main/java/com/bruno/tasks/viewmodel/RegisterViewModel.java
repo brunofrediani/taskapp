@@ -18,7 +18,7 @@ public class RegisterViewModel extends AndroidViewModel {
     private final MutableLiveData<Feedback> mCreate = new MutableLiveData<>();
     public LiveData<Feedback> create = this.mCreate;
 
-    private PersonRepository mPersonRepository ;
+    private final PersonRepository mPersonRepository ;
     public RegisterViewModel(@NonNull Application application) {
         super(application);
         this.mPersonRepository = new PersonRepository(application);
@@ -28,6 +28,7 @@ public class RegisterViewModel extends AndroidViewModel {
         mPersonRepository.create(name,email,password, new APIListener<PersonModel>() {
             @Override
             public void onSuccess(PersonModel result) {
+                result.setEmail(email);
                 mPersonRepository.saveUserData(result);
                 mCreate.setValue(new Feedback());
             }

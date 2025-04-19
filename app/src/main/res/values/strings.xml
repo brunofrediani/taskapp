@@ -42,5 +42,6 @@
     <string name="task_status_icon">task status icon</string>
     <string name="descri_o">Descrição</string>
     <string name="login_logotipo">Login Logotipo</string>
+    <string name="navigation_drawer_logo">navigation drawer logo</string>
 
 </resources>

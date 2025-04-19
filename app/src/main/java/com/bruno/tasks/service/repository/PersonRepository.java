@@ -80,6 +80,7 @@ public class PersonRepository extends BaseRepository{
         this.mSecurityPreferences.store(TaskConstants.SHARED.TOKEN_KEY, person.getToken());
         this.mSecurityPreferences.store(TaskConstants.SHARED.PERSON_KEY, person.getPersonKey());
         this.mSecurityPreferences.store(TaskConstants.SHARED.PERSON_NAME, person.getName());
+        this.mSecurityPreferences.store(TaskConstants.SHARED.PERSON_EMAIL, person.getEmail());
 
         RetrofitClient.saveHeaders(person.getToken(), person.getPersonKey());
     }
@@ -88,6 +89,8 @@ public class PersonRepository extends BaseRepository{
         person.setToken(this.mSecurityPreferences.getStore(TaskConstants.SHARED.TOKEN_KEY));
         person.setPersonKey(this.mSecurityPreferences.getStore(TaskConstants.SHARED.PERSON_KEY));
         person.setName(this.mSecurityPreferences.getStore(TaskConstants.SHARED.PERSON_NAME));
+        person.setEmail(this.mSecurityPreferences.getStore(TaskConstants.SHARED.PERSON_EMAIL));
+
         return person;
     }
 
