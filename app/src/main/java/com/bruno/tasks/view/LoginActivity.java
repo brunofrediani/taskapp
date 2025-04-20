@@ -52,9 +52,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Cria observadores
         this.loadObservers();
 
-        this.verifyUserLogged();
 
-        this.openAuthentication();
+        this.mLoginViewModel.isFingerprintAvailable();
     }
 
     private void openAuthentication() {
@@ -71,6 +70,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
+                startMain();
             }
 
             @Override
@@ -81,10 +81,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //Biometricinfo
         BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Titulo")
-                .setSubtitle("Subtitulo")
-                .setDescription("Descrição")
-                .setNegativeButtonText("Cancel")
+                .setTitle("Tasks")
+                .setSubtitle("Desbloqueie seu celular para usar o aplicativo")
+                .setDescription("Necessária autenticação biométrica para utilizar o aplicativo")
+                .setNegativeButtonText("Cancelar")
                 .build();
 
         biometricPrompt.authenticate(promptInfo);
@@ -107,9 +107,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void verifyUserLogged(){
-        this.mLoginViewModel.verifyUserLogged();
-    }
+
 
     private void loadObservers() {
         this.mLoginViewModel.login.observe(this, feedback -> {
@@ -120,9 +118,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Toast.makeText(getApplicationContext(),feedback.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        this.mLoginViewModel.userLogged.observe(this, logged -> {
-            if (logged){
-                startMain();
+        this.mLoginViewModel.fingerprint.observe(this, fingerprintAvailable -> {
+            if (fingerprintAvailable){
+                openAuthentication();
             }
         });
     }

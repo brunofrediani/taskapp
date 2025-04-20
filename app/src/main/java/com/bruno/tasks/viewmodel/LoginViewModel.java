@@ -24,8 +24,8 @@ public class LoginViewModel extends AndroidViewModel {
     private final MutableLiveData<Feedback> mLogin = new MutableLiveData<>();
     public LiveData<Feedback> login = this.mLogin;
 
-    private final MutableLiveData<Boolean> mUserLogged = new MutableLiveData<>();
-    public LiveData<Boolean> userLogged = this.mUserLogged;
+    private final MutableLiveData<Boolean> mFringerprint = new MutableLiveData<>();
+    public LiveData<Boolean> fingerprint = this.mFringerprint;
 
 
     public LoginViewModel(@NonNull Application application) {
@@ -49,15 +49,14 @@ public class LoginViewModel extends AndroidViewModel {
             }
         });
     }
-    public void verifyUserLogged(){
-        PersonModel person = this.mPersonRepository.getUserData();
-        boolean logged = !"".equals(person.getName());
 
-        //Adicionar e salvar os headers no caso do usuario ja estar logado, visto que
-        // as variaveis static que guardam as chaves sao resetadas quando o app é finalizado
+    public void isFingerprintAvailable(){
+        PersonModel person = this.mPersonRepository.getUserData();
+        boolean everLogged = !"".equals(person.getName());
+
         this.mPersonRepository.saveUserData(person);
 
-        if (!logged){
+        if (!everLogged){
             this.mPriorityRepository.all(new APIListener<List<PriorityModel>>() {
                 @Override
                 public void onSuccess(List<PriorityModel> result) {
@@ -71,6 +70,7 @@ public class LoginViewModel extends AndroidViewModel {
             });
         }
 
-        this.mUserLogged.setValue(logged);
+        this.mFringerprint.setValue(everLogged);
     }
+
 }
