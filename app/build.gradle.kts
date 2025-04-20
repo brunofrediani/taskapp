@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.room.runtime)
+    implementation(libs.biometric)
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     testImplementation(libs.junit)

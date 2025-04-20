@@ -9,13 +9,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import com.bruno.tasks.R;
 import com.bruno.tasks.viewmodel.LoginViewModel;
+
+import java.util.concurrent.Executor;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -48,7 +53,43 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         this.loadObservers();
 
         this.verifyUserLogged();
+
+        this.openAuthentication();
     }
+
+    private void openAuthentication() {
+        //Executor
+        Executor executor = ContextCompat.getMainExecutor(this);
+
+        //Prompt
+        BiometricPrompt biometricPrompt = new BiometricPrompt(LoginActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+            }
+        });
+
+        //Biometricinfo
+        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Titulo")
+                .setSubtitle("Subtitulo")
+                .setDescription("Descrição")
+                .setNegativeButtonText("Cancel")
+                .build();
+
+        biometricPrompt.authenticate(promptInfo);
+    }
+
     private void setListeners(){
         this.mViewHolder.buttonLogin.setOnClickListener(this);
         this.mViewHolder.txtRegister.setOnClickListener(this);
